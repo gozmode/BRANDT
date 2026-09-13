@@ -46,6 +46,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const barHeight = wrapper.getBoundingClientRect().height;
     if (header) header.style.top = barHeight + 'px';
     document.body.style.paddingTop = barHeight + 'px';
+    // Damit Anker-Links (z.B. "Details hier") nicht unter der fixierten
+    // Leiste/dem Header landen, sondern der Browser beim Hinspringen
+    // entsprechend Platz lässt
+    document.documentElement.style.scrollPaddingTop = barHeight + 'px';
   }
 
   // Auf-/Zuklapp-Logik
