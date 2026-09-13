@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   // Extra-Footer-Sektion, die als Quelle für die Ankündigungsleiste dient
-  const footerSectionId = "REPLACE-WITH-SECTION-ID";
+  const footerSectionId = "6aa6beb44e73d919d67e5cbc";
   const originalFooter = document.querySelector(`section[data-section-id="${footerSectionId}"]`);
 
   if (!originalFooter) return;
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const trigger = document.createElement('div');
   trigger.className = 'announcement-trigger';
   trigger.innerHTML = `
-    Dein Ankündigungstext hier
+    Aktuelle Informationen + Hinweise
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 9l-7 7-7-7"></path>
     </svg>
