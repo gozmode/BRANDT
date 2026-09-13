@@ -42,14 +42,19 @@ document.addEventListener('DOMContentLoaded', function () {
   // Fixierten Header um die tatsächliche Höhe der Leiste nach unten schieben
   const header = document.querySelector('header');
 
+  // Squarespace nutzt intern die CSS-Variable --header-height, um zu
+  // berechnen, wie weit bei einem Anker-Link (z.B. "Details hier")
+  // gescrollt werden muss, damit das Ziel nicht unter dem fixierten
+  // Header verschwindet. scroll-padding-top wird dafür NICHT
+  // ausgewertet (getestet) – deshalb aktualisieren wir stattdessen
+  // diese Variable um die Höhe unserer Leiste.
+  const originalHeaderHeight = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--header-height')) || 0;
+
   function updateOffset() {
     const barHeight = wrapper.getBoundingClientRect().height;
     if (header) header.style.top = barHeight + 'px';
     document.body.style.paddingTop = barHeight + 'px';
-    // Damit Anker-Links (z.B. "Details hier") nicht unter der fixierten
-    // Leiste/dem Header landen, sondern der Browser beim Hinspringen
-    // entsprechend Platz lässt
-    document.documentElement.style.scrollPaddingTop = barHeight + 'px';
+    document.documentElement.style.setProperty('--header-height', (originalHeaderHeight + barHeight) + 'px');
   }
 
   // Auf-/Zuklapp-Logik
