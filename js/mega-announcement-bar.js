@@ -39,6 +39,15 @@ document.addEventListener('DOMContentLoaded', function () {
   wrapper.appendChild(content);
   document.body.insertBefore(wrapper, document.body.firstChild);
 
+  // Fixierten Header um die tatsächliche Höhe der Leiste nach unten schieben
+  const header = document.querySelector('header');
+
+  function updateOffset() {
+    const barHeight = wrapper.getBoundingClientRect().height;
+    if (header) header.style.top = barHeight + 'px';
+    document.body.style.paddingTop = barHeight + 'px';
+  }
+
   // Auf-/Zuklapp-Logik
   let isOpen = false;
 
@@ -54,7 +63,14 @@ document.addEventListener('DOMContentLoaded', function () {
       trigger.classList.remove('active');
       document.body.classList.remove('announcement-open');
     }
+
+    // Höhe ändert sich durch die CSS-Transition (max-height) erst nach und nach
+    updateOffset();
+    setTimeout(updateOffset, 550);
   }
+
+  updateOffset();
+  window.addEventListener('resize', updateOffset);
 
   trigger.addEventListener('click', (e) => {
     if (e.target.classList.contains('close-button')) {

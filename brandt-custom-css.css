@@ -14,12 +14,12 @@
   left: 0;
   width: 100%;
   z-index: 999999;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  font-family: Raleway, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }
 
 .announcement-trigger {
-  background: #CFFF7E;
-  color: #000;
+  background: #E56E06;
+  color: #fff;
   padding: 15px 15px;
   cursor: pointer;
   text-align: center;
@@ -34,7 +34,7 @@
 }
 
 .announcement-trigger:hover {
-  background: #fff;
+  background: #c85f05;
 }
 
 .announcement-trigger .icon {
@@ -79,13 +79,14 @@
   display: none !important;
 }
 
-/* Platz für die offene Leiste schaffen */
-body {
-  transition: padding-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+/* Sanfter Übergang, wenn der fixierte Header durch unsere Leiste verschoben wird */
+header {
+  transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-body.announcement-open {
-  padding-top: 200px; /* ggf. an Inhaltshöhe anpassen */
+/* Platz für die Leiste schaffen (Höhe wird per JS dynamisch gesetzt) */
+body {
+  transition: padding-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Original-Footer-Sektion (Quelle der Ankündigung) ausblenden */
