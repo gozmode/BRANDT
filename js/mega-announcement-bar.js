@@ -12,24 +12,34 @@ document.addEventListener('DOMContentLoaded', function () {
   const wrapper = document.createElement('div');
   wrapper.className = 'announcement-bar-wrapper';
 
-  // Trigger-Text kommt jetzt aus der nativen Squarespace-Announcement-Bar
-  // (Marketing → Announcement Bar), damit er dort ganz normal ohne
-  // Code-Änderung editierbar ist. Die native Bar selbst bleibt per CSS
-  // (.sqs-announcement-bar-dropzone) unsichtbar, wir lesen nur ihren Text.
-  const nativeBarText = document.querySelector('.sqs-announcement-bar-text-inner');
-  const triggerText = nativeBarText && nativeBarText.innerText.trim()
-    ? nativeBarText.innerText.trim()
-    : 'Aktuelle Informationen + Hinweise';
-
   const trigger = document.createElement('div');
   trigger.className = 'announcement-trigger';
   trigger.innerHTML = `
-    ${triggerText}
+    <span class="announcement-trigger-text">Aktuelle Informationen + Hinweise</span>
     <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M19 9l-7 7-7-7"></path>
     </svg>
     <div class="close-button">✕</div>
   `;
+
+  // Trigger-Text kommt aus der nativen Squarespace-Announcement-Bar
+  // (Marketing → Announcement Bar), damit er dort ganz normal ohne
+  // Code-Änderung editierbar ist. Die native Bar selbst bleibt per CSS
+  // (.sqs-announcement-bar-dropzone) unsichtbar, wir lesen nur ihren Text.
+  // Squarespace füllt .sqs-announcement-bar-text-inner erst NACH
+  // DOMContentLoaded per eigenem Skript - deshalb hier mit ein paar
+  // Wiederholungsversuchen statt nur einmal sofort zu prüfen.
+  const triggerTextEl = trigger.querySelector('.announcement-trigger-text');
+  (function applyNativeBarText(attempt) {
+    const nativeBarText = document.querySelector('.sqs-announcement-bar-text-inner');
+    const text = nativeBarText && nativeBarText.innerText.trim();
+    if (text) {
+      triggerTextEl.textContent = text;
+      updateOffset();
+    } else if (attempt < 10) {
+      setTimeout(function () { applyNativeBarText(attempt + 1); }, 300);
+    }
+  })(0);
 
   const content = document.createElement('div');
   content.className = 'announcement-content';
