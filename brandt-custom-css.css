@@ -2,3 +2,96 @@
    FAHRSCHULE BRANDT – CUSTOM CSS
    Stand: 18.09.2026
    ========================================================= */
+
+/* =========================================================
+   01. MEGA ANNOUNCEMENT BAR
+   Zieht den Inhalt der "Extra Footer"-Sektion in eine fixierte,
+   aufklappbare Leiste oben auf der Seite (siehe js/mega-announcement-bar.js).
+   Das Verstecken der Original-Section passiert bewusst NICHT hier per CSS,
+   sondern zur Laufzeit im JS (originalFooter.style.display='none') - eine
+   dauerhafte CSS-Regel dafür hat den Squarespace Page-Editor unbenutzbar
+   gemacht (die Section dort komplett verschwinden lassen, egal welche
+   Versteck-Technik). Code-Injection-Skripte laufen nicht im Editor mit,
+   daher bleibt die Section dort immer normal sichtbar/bearbeitbar.
+   ========================================================= */
+.announcement-bar-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999999;
+  font-family: Raleway, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+.announcement-trigger {
+  background: #E56E06;
+  color: #fff;
+  padding: 15px 15px;
+  cursor: pointer;
+  text-align: center;
+  position: relative;
+  font-size: 15px;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.announcement-trigger:hover {
+  background: #c85f05;
+}
+
+.announcement-trigger .icon {
+  width: 16px;
+  height: 16px;
+  transition: transform 0.3s ease;
+}
+
+.announcement-trigger.active .icon {
+  transform: rotate(180deg);
+}
+
+.announcement-content {
+  background: #f5f5f5;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.announcement-content.active {
+  max-height: 500px; /* ggf. an Inhalt anpassen */
+}
+
+.close-button {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.close-button:hover {
+  opacity: 1;
+}
+
+/* Original-Squarespace-Ankündigungsleiste ausblenden (wir nutzen nur
+   ihren Text als Trigger-Quelle, nicht ihre eigene Optik) */
+.sqs-announcement-bar-dropzone {
+  display: none !important;
+}
+
+/* Sanfter Übergang, wenn der fixierte Header durch unsere Leiste verschoben wird */
+header {
+  transition: top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Platz für die Leiste schaffen (Höhe wird per JS dynamisch gesetzt) */
+body {
+  transition: padding-top 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
