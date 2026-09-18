@@ -37,6 +37,13 @@ document.addEventListener('DOMContentLoaded', function () {
       updateOffset();
     } else if (attempt < 10) {
       setTimeout(function () { applyNativeBarText(attempt + 1); }, 300);
+    } else {
+      // Native Announcement Bar ist im Backend deaktiviert (kein Widget im
+      // DOM) - dann soll auch unsere eigene Leiste nicht angezeigt werden.
+      wrapper.remove();
+      if (header) header.style.top = '';
+      document.body.style.paddingTop = '';
+      document.documentElement.style.setProperty('--header-height', originalHeaderHeight + 'px');
     }
   })(0);
 
