@@ -1,19 +1,11 @@
 document.addEventListener('DOMContentLoaded', function () {
-  // Extra-Footer-Sektion, die als Quelle für die Ankündigungsleiste dient
-  const footerSectionId = "6aa6beb44e73d919d67e5cbc";
-  const originalFooter = document.querySelector(`section[data-section-id="${footerSectionId}"]`);
-
-  if (!originalFooter) return;
-
-  // Klon anlegen, BEVOR das Original versteckt wird
-  const clonedFooter = originalFooter.cloneNode(true);
-  clonedFooter.removeAttribute('id');
-
-  // Original per Inline-Style verstecken (NICHT per CSS-Klasse/Regel!).
-  // Code-Injection-Skripte laufen nicht im Squarespace Page-Editor mit,
-  // dadurch sieht der Editor die Section nie als versteckt und bleibt
-  // immer normal bearbeitbar - nur auf der Live-Seite verschwindet sie.
-  originalFooter.style.display = 'none';
+  // Inhalt kommt von einer eigenständigen, nicht ins Menü eingebundenen
+  // Seite (wie /vanslide-menu, /sale-menu beim Mega Menu) statt aus einer
+  // versteckten Seiten-Section. Dadurch bleibt die Quelle immer ganz normal
+  // per Fluid Engine editierbar - nichts muss je versteckt werden, und der
+  // Squarespace Page-Editor hat damit auch nie ein Problem (anders als bei
+  // der vorherigen Section-Klon-Variante, die den Editor unbenutzbar machte).
+  const contentSourceUrl = '/announce';
 
   // Struktur der Ankündigungsleiste aufbauen
   const wrapper = document.createElement('div');
@@ -53,8 +45,20 @@ document.addEventListener('DOMContentLoaded', function () {
 
   const innerContent = document.createElement('div');
   innerContent.className = 'announcement-inner';
-  innerContent.appendChild(clonedFooter);
   content.appendChild(innerContent);
+
+  // Inhalt der /announce-Seite per Fetch holen und einfügen
+  fetch(contentSourceUrl)
+    .then(function (res) { return res.text(); })
+    .then(function (html) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const section = doc.querySelector('#page .page-section, main .page-section');
+      if (section) {
+        innerContent.appendChild(section);
+        updateOffset();
+      }
+    })
+    .catch(function () {});
 
   // Zusammensetzen
   wrapper.appendChild(trigger);
