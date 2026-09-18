@@ -90,14 +90,17 @@ body {
 }
 
 /* Original-Footer-Sektion (Quelle der Ankündigung) ausblenden.
-   Weder display:none noch width/height:0 verwenden - Squarespaces
-   Page-Editor scheint Sections ohne sichtbare Fläche generell als
-   "ausgeblendet" zu behandeln und komplett zu überspringen.
-   Stattdessen behält die Section ihre normale Größe, wird aber weit
-   aus dem sichtbaren Bereich herausgeschoben. */
+   Egal welche Technik (display:none, Nullgröße, Off-Screen) - Squarespaces
+   Page-Editor kann eine per Custom CSS unsichtbar gemachte Section offenbar
+   grundsätzlich nicht normal anzeigen/bearbeiten (getestet, alle drei
+   Varianten führten zum selben leeren Editor-Bereich). Deshalb hier die
+   einfachste, zuverlässigste Variante fürs Live-Ausblenden - zum Bearbeiten
+   stattdessen temporär überschreiben (siehe Kommentar unten). */
 .original-footer-section {
-  position: absolute !important;
-  left: -9999px !important;
-  top: -9999px !important;
-  pointer-events: none !important;
+  display: none !important;
 }
+
+/* Zum Bearbeiten temporär ans Ende der Custom-CSS-Datei anhängen,
+   danach wieder entfernen:
+   .original-footer-section { display: block !important; }
+*/
